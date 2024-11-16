@@ -1,0 +1,2 @@
+# ogura-an
+OpenAIとNotionのElectronアプリ
