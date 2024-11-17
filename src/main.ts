@@ -54,16 +54,16 @@ ipcMain.handle(
       {
         role: 'system',
         content: `
-        以下のワードと文脈を参考に、ワードの意味を500文字以下で詳しく説明し、ワード、意味、タグ、使い方の4つの項目を含むJSONを返却してください。
+        以下のワードと文脈を参考に、ワード、意味（500文字以下で、である調の詳細な説明、略語の場合は分解した言葉を頭に含める）、タグ（カテゴリ分けしやすいタグを、カンマ区切りで１〜３個記載する）、使い方の4つの項目を含むJSONを返却してください。
         返却値は必ずJSONだけにしてください。
         JSONのキーは例に合わせてください。
         使い方は文脈をそのまま転載せず、ワードを使用した適切な例文を作成してください。
-        （例）ワード: りんご、文脈: りんごを食べる
+        （例）ワード: GRIT、文脈: 評価においてGRITが重要だと言われている。
         {
-          "word": "りんご",
-          "meaning": "赤色か緑色をした丸い形状の果物",
-          "tag": "フルーツ",
-          "usage": "あの木になっている美味しそうなりんごだ。"
+          "word": "GRIT",
+          "meaning": "Guts Resilience Initiative Tenacity。長期的な目標に対する情熱と忍耐力を指す概念であり、困難や障害に直面しても諦めずに努力を続ける力を表す。心理学者アンジェラ・ダックワースによって提唱され、個人の成功や達成において重要な要素とされている。",
+          "tag": "心理学,特性",
+          "usage": "彼女のGRITが評価され、厳しいプロジェクトを最後までやり遂げることができた。"
         }
         `,
       },
@@ -104,6 +104,8 @@ ipcMain.handle('register-to-notion', async (_event, resultText: string) => {
     let createdAt = plusLocal.toISOString()
     createdAt = createdAt.slice(0, 19) + '+09:00'
 
+    const tags = resultParams.tag.split(',')
+
     const response = await axios.post(
       'https://api.notion.com/v1/pages',
       {
@@ -137,11 +139,11 @@ ipcMain.handle('register-to-notion', async (_event, resultText: string) => {
             ],
           },
           Tags: {
-            multi_select: [
-              {
-                name: resultParams.tag || '',
-              },
-            ],
+            multi_select: tags.map((tag: string) => {
+              return {
+                name: tag.trim(),
+              }
+            }),
           },
           CreatedAt: {
             date: { start: createdAt },
