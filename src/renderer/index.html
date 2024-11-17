@@ -4,20 +4,73 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ogura AN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      font-size: 10px;
+    }
+    h1 {
+      display: flex;
+      gap: 0px 5px;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #333333;
+    }
+    img.logo {
+      width: 32px;
+      height: 32px;
+    }
+    div.input_area__word, div.input_area__context {
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+    }
+    input, textarea {
+      width: 100%;
+    }
+    .button_area {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 0px 10px;
+    }
+    button {
+      padding: 3px 5px;
+      font-size: 14px;
+      border-radius: 5px;
+      color: white;
+      background-color: #333333;
+      cursor: pointer;
+      border: 0;
+    }
+    button:hover {
+      background-color: #666666;
+    }
+  </style>
 </head>
 <body>
-  <h1>Ogura AN</h1>
-  <div>
-    <label for="word">ワード</label>
-    <input type="text" id="word" />
+  <h1>
+    <img class="logo" src="../images/icon_page.png" alt="Ogura AN" />
+    Ogura AN
+  </h1>
+  <div class="input_area__word">
+    <label for="input__word">ワード</label>
+    <input type="text" id="input__word" />
   </div>
-  <div>
-    <label for="context">文脈</label>
-    <textarea id="context"></textarea>
+  <div class="input_area__context">
+    <label for="input__context">文脈</label>
+    <textarea id="input__context"></textarea>
   </div>
-  <button id="clear">消去</button>
-  <button id="search">調べる</button>
-  <div id="result"></div>
+  <div class="button_area">
+    <button id="button__clear">消去</button>
+    <button id="button__search">調べる</button>
+  </div>
+  <div id="result__wrapper"></div>
   <script src="index.js"></script>
 </body>
 </html>
