@@ -2,17 +2,27 @@
   "name": "ogura-an",
   "version": "1.0.0",
   "description": "OpenAIとNotionのElectronアプリ",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "npx electron ./dist",
-    "build": "rm -rf dist && tsc && cp src/package.json dist/ && cp -r src/renderer/index.html dist/renderer && cp -r src/images dist/images",
+    "start": "electron-forge start",
+    "build": "rm -rf dist && tsc && cp src/package.json dist/ && cp -r src/renderer/index.html dist/renderer && cp -r src/images dist/images && cp .env dist/",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,scss,md}'"
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,scss,md}'",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "make:arm64": "electron-forge package --arch=arm64 --platform=darwin"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@electron-forge/cli": "^7.5.0",
+    "@electron-forge/maker-dmg": "^7.5.0",
+    "@electron-forge/maker-squirrel": "^7.5.0",
+    "@electron-forge/maker-zip": "^7.5.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
+    "@electron-forge/plugin-fuses": "^7.5.0",
+    "@electron/fuses": "^1.8.0",
     "@types/electron": "^1.4.38",
     "@types/node": "^22.9.0",
     "@typescript-eslint/eslint-plugin": "^8.14.0",
@@ -25,9 +35,7 @@
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "axios": "^1.7.7",
-    "dotenv": "^16.4.5"
+    "typescript": "^5.6.3"
   },
   "husky": {
     "hooks": {
@@ -39,5 +47,32 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "electron-squirrel-startup": "^1.0.1"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "packageSource": "./dist",
+	"arch": "arm64"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "overwrite": true,
+            "format": "ULFO",
+            "bless": false
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "config": {}
+        }
+      ]
+    }
   }
 }

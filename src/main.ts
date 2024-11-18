@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv'
 import axios from 'axios'
 
 // .envファイルをロード
-dotenv.config()
+dotenv.config({ path: path.join(__dirname, '.env') })
 
 // 環境変数
 const OPENAI_API_MODEL = process.env.OPENAI_API_MODEL || ''
