@@ -15,6 +15,7 @@ const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || ''
 
 let mainWindow: BrowserWindow | null
 let tray: Tray | null
+let isQuitting = false
 
 app.on('ready', () => {
   // メインウィンドウ作成
@@ -34,15 +35,20 @@ app.on('ready', () => {
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show Window', click: () => mainWindow?.show() },
-    { label: 'Exit', click: () => app.quit() },
+    { label: 'Exit', click: () => {
+      isQuitting = true
+      app.quit()
+    }},
   ])
   tray.setToolTip('Ogura AN')
   tray.setContextMenu(contextMenu)
 
   // ウィンドウが閉じられたときに隠す
   mainWindow.on('close', (e) => {
-    e.preventDefault()
-    mainWindow?.hide()
+    if (!isQuitting) {
+      e.preventDefault()
+      mainWindow?.hide()
+    }
   })
 })
 
